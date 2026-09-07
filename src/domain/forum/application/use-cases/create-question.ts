@@ -1,4 +1,3 @@
-import { AnswersRepository } from "@/domain/forum/application/repositories/answers-repository.js";
 import { QuestionRepository } from "../repositories/questions-repository.js";
 import { Question } from "../../enterprise/entities/question.js";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id.js";
