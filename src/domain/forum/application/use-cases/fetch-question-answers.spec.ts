@@ -1,7 +1,7 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id.js';
 import { makeAnswer } from '../../../../../test/factories/make-answer.js';
 import { InMemoryAnswerRepository } from '../../../../../test/repositories/in-memory-answer-repository.js';
-import { FecthQuestionAnswersUseCase } from './fetch-questions-answers.js';
+import { FecthQuestionAnswersUseCase } from './fetch-question-answers.js';
 
 let inMemoryAnswersRepository: InMemoryAnswerRepository;
 let sut: FecthQuestionAnswersUseCase
