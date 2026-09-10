@@ -5,6 +5,8 @@ import { InMemoryQuestionRepository } from "../../../../../test/repositories/in-
 import { ChooseQuestionBestAnswerUseCase } from "./choose-question-best-answer.js";
 import { DeleteAnswerUseCase } from "./delete-answer.js";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id.js";
+import { NotAllowedError } from "./errors/not-allowed-error.js";
+import { ResourceNotFoundError } from "./errors/resource-not-found-error.js";
 
 let inMemoryQuestionRepository: InMemoryQuestionRepository;
 let inMemoryAnswersRepository: InMemoryAnswerRepository;
@@ -51,11 +53,12 @@ describe("Choose Question Best Answer", () => {
     await inMemoryQuestionRepository.create(question);
     await inMemoryAnswersRepository.create(answer);
 
-    expect(() => {
-      return sut.execute({
-        answerId: "answer-1",
-        authorId: "author-2",
-      });
-    }).rejects.toBeInstanceOf(Error);
+    const result = await sut.execute({
+      answerId: "answer-1",
+      authorId: "author-2",
+    });
+    
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   });
 });

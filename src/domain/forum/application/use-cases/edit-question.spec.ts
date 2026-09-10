@@ -2,6 +2,8 @@ import { InMemoryQuestionRepository } from '../../../../../test/repositories/in-
 import { makeQuestion } from '../../../../../test/factories/make-question.js';
 import { EditQuestionUseCase } from './edit-question.js';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id.js';
+import { NotAllowedError } from './errors/not-allowed-error.js';
+import { ResourceNotFoundError } from './errors/resource-not-found-error.js';
 
 let inMemoryQuestionsRepository: InMemoryQuestionRepository;
 let sut: EditQuestionUseCase
@@ -46,13 +48,14 @@ describe('Edit Question', () => {
 
     await inMemoryQuestionsRepository.create(newQuestion);
     
-    expect(() => {
-      return sut.execute({
-        questionId: newQuestion.id.toValue(),
-        authorId: 'author-2',
-        title: 'Pergunta teste',
-        content: 'Conteudo teste',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      questionId: newQuestion.id.toValue(),
+      authorId: 'author-2',
+      title: 'Pergunta teste',
+      content: 'Conteudo teste',
+    });
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })
